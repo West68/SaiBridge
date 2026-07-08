@@ -1,0 +1,207 @@
+﻿<Window x:Class="SaiBridge.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SaiBridge"
+        Height="850"
+        Width="900"
+        ResizeMode="CanResize"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid Margin="20">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 标题 -->
+        <Grid Grid.Row="0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Text="SaiBridge"
+                FontSize="28"
+                FontWeight="Bold"
+                VerticalAlignment="Center"/>
+
+            <Button
+                Grid.Column="1"
+                Width="42"
+                Height="42"
+                Margin="10,0,0,0"
+                FontSize="20"
+                Content="⚙"/>
+
+        </Grid>
+
+        <!-- SAI2 -->
+        <GroupBox Header="SAI2 程序"
+                  Grid.Row="1"
+                  Margin="0,15,0,0">
+
+            <Grid Margin="10">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition Width="90"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox Name="SaiPath"/>
+
+                <Button
+                    Grid.Column="1"
+                    Margin="8,0"
+                    Content="浏览"/>
+
+                <Button
+                    Grid.Column="2"
+                    Content="打开"/>
+
+            </Grid>
+
+        </GroupBox>
+
+        <!-- CSP -->
+        <GroupBox Header="Clip Studio Paint"
+                  Grid.Row="2"
+                  Margin="0,15,0,0">
+
+            <Grid Margin="10">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition Width="90"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox Name="CspPath"/>
+
+                <Button
+                    Grid.Column="1"
+                    Margin="8,0"
+                    Content="浏览"/>
+
+                <Button
+                    Grid.Column="2"
+                    Content="打开"/>
+
+            </Grid>
+
+        </GroupBox>
+
+        <!-- PSD缓存 -->
+        <GroupBox Header="PSD 缓存目录"
+                  Grid.Row="3"
+                  Margin="0,15,0,0">
+
+            <Grid Margin="10">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition Width="90"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox Name="PsdCachePath"/>
+
+                <Button
+                    Grid.Column="1"
+                    Margin="8,0"
+                    Content="浏览"/>
+
+                <Button
+                    Grid.Column="2"
+                    Content="打开"/>
+
+            </Grid>
+
+        </GroupBox>
+
+        <!-- 默认SAI工程目录 -->
+        <GroupBox Header="默认 SAI 工程目录"
+                  Grid.Row="4"
+                  Margin="0,15,0,0">
+
+            <Grid Margin="10">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition Width="90"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox Name="WorkspacePath"/>
+
+                <Button
+                    Grid.Column="1"
+                    Margin="8,0"
+                    Content="浏览"/>
+
+                <Button
+                    Grid.Column="2"
+                    Content="打开"/>
+
+            </Grid>
+
+        </GroupBox>
+
+        <!-- 发送 -->
+        <Button
+            Grid.Row="6"
+            Height="45"
+            FontSize="18"
+            Content="发送到 CSP"/>
+
+        <!-- 返回 -->
+        <Button
+            Grid.Row="8"
+            Height="45"
+            FontSize="18"
+            Content="返回 SAI"/>
+
+        <!-- 日志 -->
+        <GroupBox
+            Grid.Row="10"
+            Header="运行日志">
+
+            <TextBox
+                Name="LogBox"
+                Margin="10"
+                IsReadOnly="True"
+                AcceptsReturn="True"
+                TextWrapping="Wrap"
+                VerticalScrollBarVisibility="Auto"/>
+
+        </GroupBox>
+
+        <!-- 状态栏 -->
+        <StatusBar Grid.Row="11">
+
+            <StatusBarItem>
+
+                <TextBlock
+                    Name="StatusText"
+                    Text="状态：等待配置"/>
+
+            </StatusBarItem>
+
+        </StatusBar>
+
+    </Grid>
+
+</Window>
