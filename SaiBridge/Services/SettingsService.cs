@@ -7,7 +7,10 @@ namespace SaiBridge.Services;
 public static class SettingsService
 {
     private static readonly string SettingsFile =
-        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json");
+        Path.Combine(
+            AppDomain.CurrentDomain.BaseDirectory,
+            "settings.json");
+
 
     public static Settings Load()
     {
@@ -16,7 +19,10 @@ public static class SettingsService
             if (!File.Exists(SettingsFile))
                 return new Settings();
 
-            string json = File.ReadAllText(SettingsFile);
+
+            string json =
+                File.ReadAllText(SettingsFile);
+
 
             return JsonSerializer.Deserialize<Settings>(json)
                    ?? new Settings();
@@ -27,15 +33,21 @@ public static class SettingsService
         }
     }
 
+
+
     public static void Save(Settings settings)
     {
-        string json = JsonSerializer.Serialize(
-            settings,
-            new JsonSerializerOptions
-            {
-                WriteIndented = true
-            });
+        string json =
+            JsonSerializer.Serialize(
+                settings,
+                new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                });
 
-        File.WriteAllText(SettingsFile, json);
+
+        File.WriteAllText(
+            SettingsFile,
+            json);
     }
 }

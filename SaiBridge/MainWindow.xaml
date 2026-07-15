@@ -1,206 +1,368 @@
-﻿<Window x:Class="SaiBridge.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="SaiBridge"
-        Height="850"
-        Width="900"
-        ResizeMode="CanResize"
-        WindowStartupLocation="CenterScreen">
+﻿<Window
+    x:Class="SaiBridge.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+    Title="SaiBridge"
+
+    Width="900"
+    Height="850"
+
+    WindowStyle="None"
+    AllowsTransparency="True"
+    Background="Transparent"
+
+    ResizeMode="CanResize"
+    WindowStartupLocation="CenterScreen">
 
     <Grid Margin="20">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="15"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="15"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        <Border
+        CornerRadius="28"
+        Background="{DynamicResource PanelBackground}"
+       BorderBrush="{DynamicResource BorderBrush}"
+        BorderThickness="1"
+        Padding="20">
 
-        <!-- 标题 -->
-        <Grid Grid.Row="0">
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
 
-            <TextBlock
+
+            <Grid>
+
+                <Grid.RowDefinitions>
+
+                    <!-- 标题栏 -->
+                    <RowDefinition Height="45"/>
+
+                    <!-- 原来的内容 -->
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+
+                    <RowDefinition Height="20"/>
+
+                    <RowDefinition Height="Auto"/>
+
+                    <RowDefinition Height="15"/>
+
+                    <RowDefinition Height="Auto"/>
+
+                    <RowDefinition Height="15"/>
+
+                    <RowDefinition Height="*"/>
+
+                    <RowDefinition Height="Auto"/>
+
+                </Grid.RowDefinitions>
+
+                <Grid
+    Grid.Row="0"
+    Background="{DynamicResource PanelBackground}"
+    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+
+                    <Grid.ColumnDefinitions>
+
+                        <ColumnDefinition/>
+
+                        <ColumnDefinition Width="45"/>
+
+                        <ColumnDefinition Width="45"/>
+
+                        <ColumnDefinition Width="45"/>
+
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+        Margin="12,0"
+        VerticalAlignment="Center"
+        FontSize="16"
+        FontWeight="Bold"
+        Text="SaiBridge"/>
+
+                    <Button
+        Grid.Column="1"
+        Content="—"
+        Click="Minimize_Click"/>
+
+                    <Button
+        Grid.Column="2"
+        Content="□"
+        Click="Maximize_Click"/>
+
+                    <Button
+        Grid.Column="3"
+        Content="✕"
+        Click="Close_Click"/>
+
+                </Grid>
+                <!-- 标题 -->
+                <Grid Grid.Row="1">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
                 Text="SaiBridge"
                 FontSize="28"
                 FontWeight="Bold"
-                VerticalAlignment="Center"/>
+                VerticalAlignment="Center"
+                Foreground="{DynamicResource Foreground}"/>
 
-            <Button
-                Grid.Column="1"
-                Width="42"
-                Height="42"
-                Margin="10,0,0,0"
-                FontSize="20"
-                Content="⚙"/>
+                    <Button
+    Grid.Column="1"
+    Width="50"
+    Height="50"
+    HorizontalAlignment="Right"
+    VerticalAlignment="Top"
+    Margin="0,20,6,0"
+    Click="Settings_Click"
+    Background="{DynamicResource ButtonBackground}"
+    BorderBrush="{DynamicResource BorderBrush}">
 
-        </Grid>
+    <TextBlock
+        Text="⚙"
+        FontSize="22"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        TextAlignment="Center"/>
 
-        <!-- SAI2 -->
-        <GroupBox Header="SAI2 程序"
-                  Grid.Row="1"
-                  Margin="0,15,0,0">
+</Button>
+                </Grid>
 
-            <Grid Margin="10">
+                <!-- SAI2 -->
+                <GroupBox
+            Header="SAI2 程序"
+            Grid.Row="2"
+            Margin="0,15,0,0"
+            Foreground="{DynamicResource Foreground}">
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="90"/>
-                    <ColumnDefinition Width="90"/>
-                </Grid.ColumnDefinitions>
+                    <Grid Margin="10">
 
-                <TextBox Name="SaiPath"/>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="90"/>
+                        </Grid.ColumnDefinitions>
 
-                <Button
-                    Grid.Column="1"
-                    Margin="8,0"
-                    Content="浏览"/>
+                        <TextBox
+                    Name="SaiPath"
+                    Background="{DynamicResource TextBoxBackground}"
+                    Foreground="{DynamicResource Foreground}"
+                    BorderBrush="{DynamicResource BorderBrush}"/>
 
-                <Button
+                        <Button
+    Grid.Column="1"
+    Margin="16,0,8,0"
+    Content="浏览"
+    Click="BrowseSai_Click"
+    Background="{DynamicResource ButtonBackground}"
+    Foreground="{DynamicResource Foreground}"
+    BorderBrush="{DynamicResource BorderBrush}"/>
+
+
+                        <Button
                     Grid.Column="2"
-                    Content="打开"/>
+                    Content="打开"
+                    Click="OpenSaiFolder_Click"
+                    Background="{DynamicResource ButtonBackground}"
+                    Foreground="{DynamicResource Foreground}"
+                    BorderBrush="{DynamicResource BorderBrush}"/>
 
-            </Grid>
+                    </Grid>
 
-        </GroupBox>
+                </GroupBox>
 
-        <!-- CSP -->
-        <GroupBox Header="Clip Studio Paint"
-                  Grid.Row="2"
-                  Margin="0,15,0,0">
+                <!-- CSP -->
+                <GroupBox
+            Header="Clip Studio Paint"
+            Grid.Row="3"
+            Margin="0,15,0,0"
+            Foreground="{DynamicResource Foreground}">
 
-            <Grid Margin="10">
+                    <Grid Margin="10">
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="90"/>
-                    <ColumnDefinition Width="90"/>
-                </Grid.ColumnDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="90"/>
+                        </Grid.ColumnDefinitions>
 
-                <TextBox Name="CspPath"/>
+                        <TextBox
+                    Name="CspPath"
+                    Background="{DynamicResource TextBoxBackground}"
+                    Foreground="{DynamicResource Foreground}"
+                    BorderBrush="{DynamicResource BorderBrush}"/>
 
-                <Button
+                        <Button
                     Grid.Column="1"
-                    Margin="8,0"
-                    Content="浏览"/>
+                    Margin="16,0,8,0"
+                    Content="浏览"
+                    Click="BrowseCsp_Click"
+                    Background="{DynamicResource ButtonBackground}"
+                    Foreground="{DynamicResource Foreground}"
+                    BorderBrush="{DynamicResource BorderBrush}"/>
 
-                <Button
+                        <Button
                     Grid.Column="2"
-                    Content="打开"/>
+                    Content="打开"
+                    Click="OpenCspFolder_Click"
+                    Background="{DynamicResource ButtonBackground}"
+                    Foreground="{DynamicResource Foreground}"
+                    BorderBrush="{DynamicResource BorderBrush}"/>
 
-            </Grid>
+                    </Grid>
 
-        </GroupBox>
+                </GroupBox>
 
-        <!-- PSD缓存 -->
-        <GroupBox Header="PSD 缓存目录"
-                  Grid.Row="3"
-                  Margin="0,15,0,0">
+                <!-- PSD缓存 -->
+                <GroupBox
+            Header="PSD 缓存目录"
+            Grid.Row="4"
+            Margin="0,15,0,0"
+            Foreground="{DynamicResource Foreground}">
 
-            <Grid Margin="10">
+                    <Grid Margin="10">
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="90"/>
-                    <ColumnDefinition Width="90"/>
-                </Grid.ColumnDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="90"/>
+                        </Grid.ColumnDefinitions>
 
-                <TextBox Name="PsdCachePath"/>
+                        <TextBox
+                    Name="PsdCachePath"
+                    Background="{DynamicResource TextBoxBackground}"
+                    Foreground="{DynamicResource Foreground}"
+                    BorderBrush="{DynamicResource BorderBrush}"/>
 
-                <Button
+                        <Button
                     Grid.Column="1"
-                    Margin="8,0"
-                    Content="浏览"/>
+                    Margin="16,0,8,0"
+                    Content="浏览"
+                    Click="BrowsePsd_Click"
+                    Background="{DynamicResource ButtonBackground}"
+                    Foreground="{DynamicResource Foreground}"
+                    BorderBrush="{DynamicResource BorderBrush}"/>
 
-                <Button
+                        <Button
                     Grid.Column="2"
-                    Content="打开"/>
+                    Content="打开"
+                    Click="OpenPsdCache_Click"
+                    Background="{DynamicResource ButtonBackground}"
+                    Foreground="{DynamicResource Foreground}"
+                    BorderBrush="{DynamicResource BorderBrush}"/>
 
-            </Grid>
+                    </Grid>
 
-        </GroupBox>
+                </GroupBox>
 
-        <!-- 默认SAI工程目录 -->
-        <GroupBox Header="默认 SAI 工程目录"
-                  Grid.Row="4"
-                  Margin="0,15,0,0">
+                <!-- 默认SAI工程目录 -->
+                <GroupBox
+            Header="默认 SAI 工程目录"
+            Grid.Row="5"
+            Margin="0,15,0,0"
+            Foreground="{DynamicResource Foreground}">
 
-            <Grid Margin="10">
+                    <Grid Margin="10">
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="90"/>
-                    <ColumnDefinition Width="90"/>
-                </Grid.ColumnDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="90"/>
+                        </Grid.ColumnDefinitions>
 
-                <TextBox Name="WorkspacePath"/>
+                        <TextBox
+                    Name="WorkspacePath"
+                    Background="{DynamicResource TextBoxBackground}"
+                    Foreground="{DynamicResource Foreground}"
+                    BorderBrush="{DynamicResource BorderBrush}"/>
 
-                <Button
+                        <Button
                     Grid.Column="1"
-                    Margin="8,0"
-                    Content="浏览"/>
+                    Margin="16,0,8,0"
+                    Content="浏览"
+                    Click="BrowseWorkspace_Click"
+                    Background="{DynamicResource ButtonBackground}"
+                    Foreground="{DynamicResource Foreground}"
+                    BorderBrush="{DynamicResource BorderBrush}"/>
 
-                <Button
+                        <Button
                     Grid.Column="2"
-                    Content="打开"/>
+                    Content="打开"
+                    Click="OpenWorkspace_Click"
+                    Background="{DynamicResource ButtonBackground}"
+                    Foreground="{DynamicResource Foreground}"
+                    BorderBrush="{DynamicResource BorderBrush}"/>
 
-            </Grid>
+                    </Grid>
 
-        </GroupBox>
+                </GroupBox>
 
-        <!-- 发送 -->
-        <Button
-            Grid.Row="6"
+                <!-- 发送 -->
+                <Button
+            Grid.Row="7"
             Height="45"
             FontSize="18"
-            Content="发送到 CSP"/>
+            Content="发送到 CSP"
+            Click="SendToCsp_Click"
+            Background="{DynamicResource ButtonBackground}"
+            Foreground="{DynamicResource Foreground}"
+            BorderBrush="{DynamicResource BorderBrush}"/>
 
-        <!-- 返回 -->
-        <Button
-            Grid.Row="8"
+                <!-- 返回 -->
+                <Button
+            Grid.Row="9"
             Height="45"
             FontSize="18"
-            Content="返回 SAI"/>
+            Content="返回 SAI"
+            Click="ReturnToSai_Click"
+            Background="{DynamicResource ButtonBackground}"
+            Foreground="{DynamicResource Foreground}"
+            BorderBrush="{DynamicResource BorderBrush}"/>
 
-        <!-- 日志 -->
-        <GroupBox
-            Grid.Row="10"
-            Header="运行日志">
+                <!-- 日志 -->
+                <GroupBox
+            Grid.Row="11"
+            Header="运行日志"
+            Foreground="{DynamicResource Foreground}">
 
-            <TextBox
+                    <TextBox
                 Name="LogBox"
                 Margin="10"
                 IsReadOnly="True"
                 AcceptsReturn="True"
                 TextWrapping="Wrap"
-                VerticalScrollBarVisibility="Auto"/>
+                VerticalScrollBarVisibility="Auto"
+                Style="{DynamicResource LogTextBoxStyle}"
+                Foreground="{DynamicResource Foreground}"
+                BorderBrush="{DynamicResource BorderBrush}"/>
 
-        </GroupBox>
+                </GroupBox>
 
-        <!-- 状态栏 -->
-        <StatusBar Grid.Row="11">
+                <!-- 状态栏 -->
+                <StatusBar
+            Grid.Row="12"
+            Background="{DynamicResource PanelBackground}"
+            Foreground="{DynamicResource Foreground}">
 
-            <StatusBarItem>
+                    <StatusBarItem>
 
-                <TextBlock
+                        <TextBlock
                     Name="StatusText"
-                    Text="状态：等待配置"/>
+                    Text="状态：等待配置"
+                    Foreground="{DynamicResource Foreground}"/>
 
-            </StatusBarItem>
+                    </StatusBarItem>
 
-        </StatusBar>
+                </StatusBar>
+
+            </Grid>
+
+        </Border>
 
     </Grid>
 
