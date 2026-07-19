@@ -198,12 +198,12 @@ public partial class MainWindow : System.Windows.Window
         // 激活 SAI
         SaiAutomation.Activate(sai);
 
-        SaiAutomation.Wait(120);
+        SaiAutomation.Wait(60);
 
         // 打开另存为
         SaiAutomation.PressCtrlShiftS();
 
-        SaiAutomation.Wait(300);
+        SaiAutomation.Wait(150);
 
         // 查找另存为窗口
         IntPtr dialog =
@@ -252,15 +252,15 @@ public partial class MainWindow : System.Windows.Window
             WorkspacePath.Text);
 
 
-        SaiAutomation.Wait(120);
+        SaiAutomation.Wait(60);
 
 
 
-        SaiAutomation.Wait(120);
+        SaiAutomation.Wait(60);
 
         SaiAutomation.PressEnter();
 
-        SaiAutomation.Wait(300);
+        SaiAutomation.Wait(150);
 
 
         // 处理覆盖确认
@@ -312,7 +312,7 @@ public partial class MainWindow : System.Windows.Window
         {
             csp = Process.Start(CspPath.Text);
 
-            Thread.Sleep(5000);
+            Thread.Sleep(3000);
 
             csp =
                 SaiAutomation.FindSaiProcess(
@@ -329,12 +329,12 @@ public partial class MainWindow : System.Windows.Window
 
         SaiAutomation.Activate(csp);
 
-        SaiAutomation.Wait(250);
+        SaiAutomation.Wait(120);
 
         // 打开文件
         SaiAutomation.PressCtrlO();
 
-        SaiAutomation.Wait(250);
+        SaiAutomation.Wait(120);
 
         IntPtr openDialog =
             SaiAutomation.FindForegroundWindow();
