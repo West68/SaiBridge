@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using SaiBridge.Automation;
 using SaiBridge.Models;
 using SaiBridge.Services;
@@ -181,7 +181,7 @@ public partial class MainWindow : System.Windows.Window
     }
 
     // ==========================================================
-    // 主功能（暂时占位）
+    // SAI → CSP
     // ==========================================================
 
     private void SendToCsp_Click(object sender, RoutedEventArgs e)
@@ -190,10 +190,13 @@ public partial class MainWindow : System.Windows.Window
 
         if (sai == null)
         {
-            LogBox.AppendText("× 未找到 SAI2\n");
+            LogBox.AppendText("× 未找到 SAI2 进程，请确认 SAI2 已启动\n");
             LogBox.ScrollToEnd();
             return;
         }
+
+        LogBox.AppendText("→ 正在保存 SAI2 文件...\n");
+        LogBox.ScrollToEnd();
 
         // 激活 SAI
         SaiAutomation.Activate(sai);
@@ -211,7 +214,7 @@ public partial class MainWindow : System.Windows.Window
 
         if (dialog == IntPtr.Zero)
         {
-            LogBox.AppendText("× 没有找到保存窗口\n");
+            LogBox.AppendText("× 未找到 SAI2 保存窗口，请重试\n");
             LogBox.ScrollToEnd();
             return;
         }
@@ -271,6 +274,9 @@ public partial class MainWindow : System.Windows.Window
 
         LogBox.ScrollToEnd();
 
+        LogBox.AppendText("→ 正在导出 PSD...\n");
+        LogBox.ScrollToEnd();
+
         // 导出PSD
         SaiAutomation.ExportPsdWorkflow(
             sai,
@@ -283,7 +289,7 @@ public partial class MainWindow : System.Windows.Window
         if (newestPsd == null)
         {
             LogBox.AppendText(
-                "× 没找到PSD\n");
+                "× 未找到导出的 PSD 文件，导出可能失败\n");
 
             return;
         }
@@ -295,14 +301,12 @@ public partial class MainWindow : System.Windows.Window
 
 
 
-        if (newestPsd == null)
-        {
-            LogBox.AppendText("× 没找到PSD\n");
-            return;
-        }
         //=========================
         // 启动CSP
         //=========================
+
+        LogBox.AppendText("→ 正在启动 CSP...\n");
+        LogBox.ScrollToEnd();
 
         Process? csp =
             SaiAutomation.FindSaiProcess(
@@ -312,20 +316,26 @@ public partial class MainWindow : System.Windows.Window
         {
             csp = Process.Start(CspPath.Text);
 
-            Thread.Sleep(3000);
-
-            csp =
-                SaiAutomation.FindSaiProcess(
-                    CspPath.Text);
+            // 轮询等待 CSP 启动，最多 15 秒
+            for (int i = 0; i < 75; i++)
+            {
+                Thread.Sleep(200);
+                csp = SaiAutomation.FindSaiProcess(CspPath.Text);
+                if (csp != null && csp.MainWindowHandle != IntPtr.Zero)
+                    break;
+            }
         }
 
         if (csp == null)
         {
             LogBox.AppendText(
-                "× CSP启动失败\n");
+                "× 启动 CSP 超时（15 秒），请手动启动 CSP 后重试\n");
 
             return;
         }
+
+        LogBox.AppendText("√ CSP 已就绪\n");
+        LogBox.ScrollToEnd();
 
         SaiAutomation.Activate(csp);
 
@@ -343,6 +353,9 @@ public partial class MainWindow : System.Windows.Window
             openDialog,
             newestPsd);
 
+        LogBox.AppendText("√ 已在 CSP 中打开\n");
+        LogBox.ScrollToEnd();
+
     }
 
 
@@ -351,7 +364,7 @@ public partial class MainWindow : System.Windows.Window
 
 
     // ==========================================================
-    // 返回 SAI
+    // CSP → SAI
     // ==========================================================
 
     private void ReturnToSai_Click(object sender, RoutedEventArgs e)
@@ -366,7 +379,7 @@ public partial class MainWindow : System.Windows.Window
 
         if (newestPsd == null)
         {
-            LogBox.AppendText("× 没找到PSD\n");
+            LogBox.AppendText("× 未找到 PSD 文件，请先使用'发送到 CSP'\n");
             return;
         }
 
@@ -380,17 +393,36 @@ public partial class MainWindow : System.Windows.Window
 
         if (csp == null)
         {
-            LogBox.AppendText("× CSP未启动\n");
+            LogBox.AppendText("× CSP 未启动，请先使用'发送到 CSP'\n");
             return;
         }
+
+        LogBox.AppendText("→ 正在保存 CSP 文件...\n");
+        LogBox.ScrollToEnd();
 
         SaiAutomation.Activate(csp);
 
         SaiAutomation.Wait(80);
 
+        // 记录保存前的文件时间
+        DateTime saveBefore = File.GetLastWriteTime(newestPsd);
+
         SaiAutomation.PressCtrlS();
 
         SaiAutomation.Wait(300);
+
+        // 验证保存是否成功
+        DateTime saveAfter = File.GetLastWriteTime(newestPsd);
+        if (saveAfter == saveBefore)
+        {
+            LogBox.AppendText("× CSP 保存可能失败，PSD 文件未更新\n");
+            LogBox.ScrollToEnd();
+        }
+        else
+        {
+            LogBox.AppendText("√ CSP 保存成功\n");
+            LogBox.ScrollToEnd();
+        }
 
         //=========================
         // 打开SAI
@@ -402,7 +434,7 @@ public partial class MainWindow : System.Windows.Window
 
         if (sai == null)
         {
-            LogBox.AppendText("× 未找到SAI\n");
+            LogBox.AppendText("× 未找到 SAI2 进程\n");
             return;
         }
 
@@ -424,6 +456,9 @@ public partial class MainWindow : System.Windows.Window
         SaiAutomation.Activate(sai);
 
         SaiAutomation.Wait(300);
+
+        LogBox.AppendText("√ 已返回 SAI2\n");
+        LogBox.ScrollToEnd();
 
     }
 
