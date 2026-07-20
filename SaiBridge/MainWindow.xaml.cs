@@ -5,6 +5,7 @@ using SaiBridge.Services;
 using SaiBridge.Views;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
@@ -20,6 +21,13 @@ public partial class MainWindow : System.Windows.Window
 
 
         UiAutomationHelper.Logger =
+            msg =>
+            {
+                LogBox.AppendText(msg);
+                LogBox.ScrollToEnd();
+            };
+
+        SaiAutomation.Logger =
             msg =>
             {
                 LogBox.AppendText(msg);
@@ -344,10 +352,25 @@ public partial class MainWindow : System.Windows.Window
         // 打开文件
         SaiAutomation.PressCtrlO();
 
-        SaiAutomation.Wait(120);
-
+        // ★ 轮询查找真正的文件打开对话框（标题包含"打开"/"Open"）
         IntPtr openDialog =
-            SaiAutomation.FindForegroundWindow();
+            SaiAutomation.FindOpenDialogWindow(timeoutMs: 5000);
+
+        // ★诊断
+        {
+            StringBuilder diagSb = new StringBuilder(256);
+            SaiAutomation.GetWindowTextForDiag(openDialog, diagSb, 256);
+            LogBox.AppendText(
+                $"→ [DIAG] FindOpenDialogWindow=0x{openDialog:X} title=\"{diagSb}\"\n");
+            LogBox.ScrollToEnd();
+        }
+
+        if (openDialog == IntPtr.Zero)
+        {
+            LogBox.AppendText("× 未找到 CSP 打开文件对话框，请重试\n");
+            LogBox.ScrollToEnd();
+            return;
+        }
 
         SaiAutomation.OpenFileInCsp(
             openDialog,
